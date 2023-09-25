@@ -1,77 +1,55 @@
-# Getting Started with Nest.js
 
-Welcome to your journey with Nest.js! This README provides an overview of how to set up a production-grade Nest.js application using some of the best tools and libraries available.
+![bank](./docs/assets/bank.jpg)
 
-## Prerequisites
+# Nest.js Banking System
 
-Before you begin, ensure you have the following prerequisites installed:
+Welcome to the Nest.js Banking System project! This repository contains the source code for a modern and secure banking system developed using the Nest.js framework.
 
-- Node.js (v14 or later)
-- npm or Yarn
+## Table of Contents
 
-## Installation
+- [Features](#features)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+  - [Database Setup](#database-setup)
+  - [Running the Application](#running-the-application)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
 
-1. Clone this repository:
+## Features
 
-```bash
-   git clone https://github.com/losefor/nest-starter
-   cd nest-starter
-```
 
-2.Install dependencies:
+- **User Management**: Create, update, and manage user accounts with authentication and authorization mechanisms in place.
 
-```bash
-npm install
-# or
-yarn install
-```
+- **Account Management**: Enable users to create various types of accounts, such as savings, checking, and more.
 
-## features
+- **Transaction Handling**: Facilitate secure and efficient transactions, including deposits, withdrawals, transfers, and transaction history tracking.
 
-### ERD (Auto generated)
+- **Security**: Implement robust security measures to protect user data and financial information. This includes encryption, access controls, and best practices for security.
 
-![Auto generated erd](./src/prisma/generated-erd.svg)
+- **Notifications**: Send notifications to users for various account activities, such as balance updates, transaction confirmations, and security alerts.
 
-### Versioning
+- **Reports and Analytics**: Generate reports and analytics for account holders to monitor their financial activities and make informed decisions.
 
-Versioning, especially in the context of software development and APIs, brings several benefits that contribute to efficient collaboration, compatibility, and overall project management
+## Erd
+![bank](./src/prisma/generated-erd.svg)
 
-## Production-Grade Tools and Libraries
 
-To ensure the reliability, security, and performance of our Nest.js application in production, we should use the following tools and libraries:
+## Getting Started
 
-- [x] **express**: The foundation of Nest.js, providing a fast and minimalist web framework.
-- [x] **helmet**: Enhances security by setting appropriate HTTP headers.
-- [x] **morgan**: Logs incoming requests and responses for debugging and monitoring.
-- [x] **class-validator**: Data validation and sanitization to prevent vulnerabilities.
-- [x] **passport.js**: Authentication middleware with support for various strategies.
-- [x] **cors**: Middleware to handle Cross-Origin Resource Sharing.
-- [x] **pino**: Logging libraries for structured and customizable logs.
-- [x] **prisma**: A powerful Object-Relational Mapping library for database interactions.
-- [ ] **Memcached**: In-memory caching solutions for improved performance.
-- [ ] **nodemailer**: Sending emails, useful for features like password resets.
-  - [ ] Setup template system
-- [x] **pm2**: Process manager for monitoring, restarting, and load balancing.
-- [x] **helmet**: Content Security Policy middleware to prevent XSS attacks.
-- [x] **jest**: Testing frameworks for unit and integration tests.
-- [ ] **supertest**: Library for testing HTTP requests and responses.
-- [x] **eslint**: Static code analysis tool for code quality checks.
-- [x] **prettier**: Code formatting tool for maintaining consistent styles.
-- [x] **swagger**: Documenting your API endpoints for easy consumption.
-  - [x] security auth before entering swagger
-- [x] **i18n**: Localization functionality.
-- [x] **sharp**: Image manipulation library used for image optimization
-- [x] **@casl/ability**: ACL authorization
-  - [ ] Cache `ability` instance for recent active users
-- [ ] **husky**: Set up git hooks
-- [x] **multer**: Multipart handler to upload files
-  - [x] Digital ocean upload files
-  - [ ] Maintenance and Cleanup - Implement a routine to clean up unused or expired images from your storage solution. Set up cron jobs or background tasks to perform this cleanup.
-  - [ ] Monitoring and Logging - Set up monitoring and logging to track image-related activities, including uploads, retrievals, and errors. Monitoring helps you identify and address performance issues or anomalies.
-- [ ] **docker**: Docker image for the app
+Follow these steps to set up and run the Nest.js Banking System project on your local machine.
 
-## Contributing
+### Prerequisites
 
-Contributions are welcome! If you find any issues or have improvements to suggest, feel free to open a pull request.
+- [Node.js](https://nodejs.org/) installed on your system.
+- A database system (e.g., PostgreSQL, MySQL, or SQLite) installed and configured.
 
-Happy coding!
+### Installation
+
+1. Clone the repository to your local machine:
+
+   ```bash
+   git clone https://github.com/yourusername/nestjs-banking-system.git
