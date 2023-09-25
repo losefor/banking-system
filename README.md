@@ -52,4 +52,4 @@ Follow these steps to set up and run the Nest.js Banking System project on your 
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone https://github.com/yourusername/nestjs-banking-system.git
+   git clone https://github.com/losefor/banking-system.git
