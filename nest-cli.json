@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "plugins": ["@nestjs/swagger"],
+    "webpack": true,
+    "assets": [{ "include": "i18n/**/*", "watchAssets": true }]
+  },
+  "projects": {
+    "image-manipulation": {
+      "type": "library",
+      "root": "libs/image-manipulation",
+      "entryFile": "index",
+      "sourceRoot": "libs/image-manipulation/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/image-manipulation/tsconfig.lib.json"
+      }
+    }
+  }
+}

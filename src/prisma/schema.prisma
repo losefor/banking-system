@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "./generated-erd.svg"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(uuid())
+
+  // Local auth 
+  username String? @unique
+  password String?
+
+  email String? @unique
+
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  permissionId String
+
+  // Statisticle fields
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  images    Image[]
+
+  @@map("users")
+}
+
+model Permission {
+  id String @id @default(uuid())
+
+  name   Translation @relation(fields: [nameId], references: [id])
+  nameId String      @map("name_id")
+
+  uniqueName String @unique @map("unique_name") // unique name for the permisson 
+
+  // Statisticle fields
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+
+  // Models you want to control its permissions
+  Image String @default("")
+
+  users User[] @relation()
+
+  @@map("permissions")
+}
+
+model Image {
+  id       String @id @default(uuid())
+  filename String
+  url      String
+
+  isUsed Boolean @default(false) @map("is_used")
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
+
+  // Metadata
+  width       Int?
+  hight       Int?
+  sizeInBytes Int? @map("size_in_bytes")
+
+  // Statisticle fields
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("images")
+}
+
+model Translation {
+  id String @id @default(uuid())
+
+  ar  String?
+  en  String?
+  ckb String?
+
+  permissions Permission[]
+
+  @@map("translations")
+}
