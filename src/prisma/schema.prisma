@@ -26,8 +26,12 @@ enum AccountType {
 model Account {
   id String @id @default(uuid())
 
-  balance                   Float
-  accountType               AccountType
+  balance     Float
+  accountType AccountType @map("account_type")
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
   pemdingfromtransactions   PendingTransactoin[]   @relation("PedningFromAccount")
   pemdingtotransactions     PendingTransactoin[]   @relation("PedningToAccount")
   confirmedfromtransactions ConfirmedTransactoin[] @relation("ConfirmedFromAccount")
@@ -51,10 +55,10 @@ model ConfirmedTransactoin {
 
   amount Float
 
-  fromAccountId String
+  fromAccountId String  @map("from_account_id")
   fromAccount   Account @relation("ConfirmedFromAccount", fields: [fromAccountId], references: [id])
 
-  toAccountId String
+  toAccountId String  @map("to_account_id")
   toAccount   Account @relation("ConfirmedToAccount", fields: [toAccountId], references: [id])
 }
 
@@ -68,12 +72,13 @@ model User {
   email String? @unique
 
   permission   Permission @relation(fields: [permissionId], references: [id])
-  permissionId String
+  permissionId String     @map("permission_id")
 
   // Statisticle fields
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @map("updated_at")
   images    Image[]
+  accounts  Account[]
 
   @@map("users")
 }
@@ -93,6 +98,7 @@ model Permission {
   // Models you want to control its permissions
   Image   String @default("")
   Account String @default("")
+  Bank    String @default("")
 
   users User[] @relation()
 
