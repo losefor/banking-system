@@ -10,6 +10,9 @@ import { UsersModule } from './users/users.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { LoggerModule } from 'nestjs-pino';
 import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
+import { TransactionsModule } from './transactions/transactions.module';
+import { AccountsModule } from './accounts/accounts.module';
+import { BanksModule } from './banks/banks.module';
 import * as path from 'path';
 
 @Module({
@@ -46,6 +49,9 @@ import * as path from 'path';
     CaslModule,
     UsersModule,
     PermissionsModule,
+    TransactionsModule,
+    AccountsModule,
+    BanksModule,
   ],
 })
 export class AppModule {}

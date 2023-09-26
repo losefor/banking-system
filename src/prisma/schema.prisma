@@ -12,6 +12,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Bank {
+  id String @id @default(uuid())
+
+  name String
+}
+
+enum AccountType {
+  CUREENT
+  SAVING
+}
+
+model Account {
+  id String @id @default(uuid())
+
+  balance                   Float
+  accountType               AccountType
+  pemdingfromtransactions   PendingTransactoin[]   @relation("PedningFromAccount")
+  pemdingtotransactions     PendingTransactoin[]   @relation("PedningToAccount")
+  confirmedfromtransactions ConfirmedTransactoin[] @relation("ConfirmedFromAccount")
+  confirmedtotransactions   ConfirmedTransactoin[] @relation("ConfirmedToAccount")
+}
+
+model PendingTransactoin {
+  id String @id @default(uuid())
+
+  amount Float
+
+  fromAccountId String
+  fromAccount   Account @relation("PedningFromAccount", fields: [fromAccountId], references: [id])
+
+  toAccountId String
+  toAccount   Account @relation("PedningToAccount", fields: [toAccountId], references: [id])
+}
+
+model ConfirmedTransactoin {
+  id String @id @default(uuid())
+
+  amount Float
+
+  fromAccountId String
+  fromAccount   Account @relation("ConfirmedFromAccount", fields: [fromAccountId], references: [id])
+
+  toAccountId String
+  toAccount   Account @relation("ConfirmedToAccount", fields: [toAccountId], references: [id])
+}
+
 model User {
   id String @id @default(uuid())
 
@@ -45,7 +91,8 @@ model Permission {
   updatedAt DateTime? @map("updated_at")
 
   // Models you want to control its permissions
-  Image String @default("")
+  Image   String @default("")
+  Account String @default("")
 
   users User[] @relation()
 

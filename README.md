@@ -7,17 +7,13 @@ Welcome to the Nest.js Banking System project! This repository contains the sour
 
 ## Table of Contents
 
-- [Features](#features)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Configuration](#configuration)
-  - [Database Setup](#database-setup)
-  - [Running the Application](#running-the-application)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
+- [Nest.js Banking System](#nestjs-banking-system)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Erd](#erd)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
 
 ## Features
 
