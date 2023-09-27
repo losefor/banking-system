@@ -19,7 +19,7 @@ model Bank {
 }
 
 enum AccountType {
-  CUREENT
+  CURRENT
   SAVING
 }
 
@@ -69,7 +69,8 @@ model User {
   username String? @unique
   password String?
 
-  email String? @unique
+  email   String? @unique
+  address String
 
   permission   Permission @relation(fields: [permissionId], references: [id])
   permissionId String     @map("permission_id")
