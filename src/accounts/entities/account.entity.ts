@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { $Enums, Account } from '@prisma/client';
-import { IsEnum, IsNumber } from 'class-validator';
+import { IsEnum, IsNumber, IsString, IsUUID } from 'class-validator';
 
 export class AccountDto implements Account {
   id: string;
@@ -11,4 +11,8 @@ export class AccountDto implements Account {
   @IsEnum($Enums.AccountType)
   @ApiProperty({ enum: $Enums.AccountType })
   accountType: $Enums.AccountType;
+
+  @IsUUID()
+  @IsString()
+  userId: string;
 }

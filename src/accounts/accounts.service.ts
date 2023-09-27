@@ -1,15 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { Body, Injectable } from '@nestjs/common';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class AccountsService {
+  constructor(private prisma: PrismaService) {}
+
   create(createAccountDto: CreateAccountDto) {
-    return 'This action adds a new account';
+    const { userId, ...body } = createAccountDto;
+    return this.prisma.account.create({
+      data: {
+        ...body,
+        user: {
+          connect: { id: userId },
+        },
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all accounts`;
+  async findAll() {
+    const data = await this.prisma.account.findMany({});
+
+    const count = await this.prisma.account.count({});
+
+    return { count, data };
+  }
+
+  async findMyAccounts(userId: string) {
+    const where: Prisma.AccountFindManyArgs['where'] = {
+      userId,
+    };
+
+    const data = await this.prisma.account.findMany({
+      where,
+    });
+
+    const count = await this.prisma.account.count({
+      where,
+    });
+
+    return { count, data };
   }
 
   findOne(id: number) {
