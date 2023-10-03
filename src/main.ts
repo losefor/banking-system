@@ -4,7 +4,6 @@ import cors from 'cors';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { VersioningType } from '@nestjs/common';
 import basicAuth from 'express-basic-auth';
 import { Logger } from 'nestjs-pino';
 

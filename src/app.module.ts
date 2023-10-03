@@ -3,7 +3,6 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { UploadsModule } from './uploads/uploads.module';
 import { DevtoolsModule } from '@nestjs/devtools-integration';
 import { CaslModule } from './casl/casl.module';
 import { UsersModule } from './users/users.module';
@@ -45,7 +44,6 @@ import * as path from 'path';
     AuthModule,
     PrismaModule,
     CommonModule,
-    UploadsModule,
     CaslModule,
     UsersModule,
     PermissionsModule,
