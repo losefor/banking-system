@@ -12,8 +12,9 @@ import { AccountsService } from './accounts.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { Response } from 'express';
-import { ApiOkResponse } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Accounts')
 @Controller('accounts')
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
@@ -40,12 +41,12 @@ export class AccountsController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAccountDto: UpdateAccountDto) {
-    return this.accountsService.update(+id, updateAccountDto);
+    return this.accountsService.update(id, updateAccountDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.accountsService.remove(+id);
+    return this.accountsService.remove(id);
   }
 
   @ApiOkResponse({
@@ -57,7 +58,7 @@ export class AccountsController {
     @Param('id') id: string,
     @Res() res: Response,
   ) {
-    const pdf = await this.accountsService.generateAccountStatement(+id);
+    const pdf = await this.accountsService.generateAccountStatement(id);
 
     res.writeHead(200, {
       'Content-Length': Buffer.byteLength(pdf),

@@ -4,147 +4,7 @@ import { UpdateAccountDto } from './dto/update-account.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import PdfPrinter from 'pdfmake';
-import fs from 'fs';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
-
-// Sample account statement data
-const accountStatementData = [
-  { date: '2023-01-01', description: 'Deposit', amount: 1000 },
-  { date: '2023-02-01', description: 'Withdrawal', amount: -500 },
-  // Add more transactions as needed
-];
-
-// Define the document definition
-const complexDocumentDefinition: TDocumentDefinitions = {
-  pageSize: 'A4',
-  pageMargins: [40, 60, 40, 60],
-  header: {
-    text: 'Account Statement',
-    fontSize: 18,
-    bold: true,
-    margin: [40, 20, 40, 10],
-    alignment: 'center',
-  },
-  footer: function (currentPage, pageCount) {
-    return {
-      text: `Page ${currentPage.toString()} of ${pageCount.toString()}`,
-      alignment: 'center',
-      fontSize: 10,
-      margin: [0, 10, 0, 0],
-    };
-  },
-  content: [
-    {
-      text: 'ACCOUNT HOLDER DETAILS',
-      style: 'header',
-    },
-    {
-      text: [
-        {
-          text: 'Account holder name: ',
-          bold: true,
-        },
-        {
-          text: 'Mohammed Paqer',
-        },
-      ],
-    },
-    {
-      text: [
-        {
-          text: 'Registered Mobile number: ',
-          bold: true,
-        },
-        {
-          text: '07828477048',
-        },
-      ],
-    },
-    {
-      text: [
-        {
-          text: 'Residential address: ',
-          bold: true,
-        },
-        {
-          text: 'Al-saydia',
-        },
-      ],
-    },
-    {
-      text: 'ACCOUNT DETAILS',
-      style: 'header',
-    },
-    {
-      text: [
-        {
-          text: 'Account type: ',
-          bold: true,
-        },
-        {
-          text: 'Saving',
-        },
-      ],
-    },
-    {
-      text: [
-        {
-          text: 'Account balance: ',
-          bold: true,
-        },
-        {
-          text: '3000',
-        },
-      ],
-    },
-    {
-      text: 'ACCOUNT STATEMENT',
-      style: 'header',
-    },
-    {
-      table: {
-        headerRows: 1,
-        widths: ['auto', '*', 'auto'],
-        body: [
-          [
-            { text: 'Date', bold: true },
-            { text: 'Description', bold: true },
-            { text: 'Amount', bold: true },
-          ],
-          ...accountStatementData.map((transaction) => [
-            transaction.date,
-            transaction.description,
-            transaction.amount,
-          ]),
-        ],
-      },
-    },
-    '\n\n',
-    {
-      text: 'Summary:',
-      style: 'summary',
-    },
-    {
-      ul: [
-        'Total Deposits: $1000',
-        'Total Withdrawals: $500',
-        'Net Balance: $500',
-      ],
-    },
-  ],
-  styles: {
-    summary: {
-      fontSize: 14,
-      bold: true,
-      margin: [0, 10, 0, 0],
-    },
-    header: {
-      fontSize: 18,
-      bold: true,
-      margin: [0, 10, 0, 0],
-    },
-  },
-};
 
 @Injectable()
 export class AccountsService {
@@ -190,15 +50,36 @@ export class AccountsService {
     return `This action returns a #${id} account`;
   }
 
-  update(id: number, updateAccountDto: UpdateAccountDto) {
-    return `This action updates a #${id} account`;
+  update(id: string, updateAccountDto: UpdateAccountDto) {
+    return this.prisma.account.update({
+      where: { id },
+      data: updateAccountDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} account`;
+  remove(id: string) {
+    return this.prisma.account.delete({
+      where: { id },
+    });
   }
 
-  async generateAccountStatement(id: number) {
+  async generateAccountStatement(id: string) {
+    const account = await this.prisma.account.findUnique({
+      where: { id },
+      include: {
+        user: true,
+      },
+    });
+
+    const transactions = await this.prisma.confirmedTransaction.findMany({
+      where: {
+        OR: [{ fromAccountId: id }, { toAccountId: id }],
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
     return new Promise<Buffer>((res, rej) => {
       const fonts = {
         Roboto: {
@@ -208,16 +89,147 @@ export class AccountsService {
           bolditalics: 'fonts/Roboto-MediumItalic.ttf',
         },
       };
+
       const printer = new PdfPrinter(fonts);
+
+      // Define the document definition
+      const complexDocumentDefinition: TDocumentDefinitions = {
+        pageSize: 'A4',
+        pageMargins: [40, 60, 40, 60],
+        header: {
+          text: 'Account Statement',
+          fontSize: 18,
+          bold: true,
+          margin: [40, 20, 40, 10],
+          alignment: 'center',
+        },
+        footer: function (currentPage, pageCount) {
+          return {
+            text: `Page ${currentPage.toString()} of ${pageCount.toString()}`,
+            alignment: 'center',
+            fontSize: 10,
+            margin: [0, 10, 0, 0],
+          };
+        },
+        content: [
+          {
+            text: 'ACCOUNT HOLDER DETAILS',
+            style: 'header',
+          },
+          {
+            text: [
+              {
+                text: 'Account holder name: ',
+                bold: true,
+              },
+              {
+                text: account.user.fullName,
+              },
+            ],
+          },
+          {
+            text: [
+              {
+                text: 'Registered Mobile number: ',
+                bold: true,
+              },
+              {
+                text: account.user.username,
+              },
+            ],
+          },
+          {
+            text: [
+              {
+                text: 'Residential address: ',
+                bold: true,
+              },
+              {
+                text: account.user.address,
+              },
+            ],
+          },
+          {
+            text: 'ACCOUNT DETAILS',
+            style: 'header',
+          },
+          {
+            text: [
+              {
+                text: 'Account type: ',
+                bold: true,
+              },
+              {
+                text: account.accountType,
+              },
+            ],
+          },
+          {
+            text: [
+              {
+                text: 'Account balance: ',
+                bold: true,
+              },
+              {
+                text: account.balance,
+              },
+            ],
+          },
+          {
+            text: 'ACCOUNT STATEMENT',
+            style: 'header',
+          },
+          {
+            table: {
+              headerRows: 1,
+              widths: ['auto', '*', 'auto'],
+              body: [
+                [
+                  { text: 'Date', bold: true },
+                  { text: 'Description', bold: true },
+                  { text: 'Amount', bold: true },
+                ],
+                ...transactions.map((transaction) => [
+                  transaction.createdAt.toDateString(),
+                  transaction.type,
+                  transaction.amount,
+                ]),
+              ],
+            },
+          },
+          '\n\n',
+          {
+            text: 'Summary:',
+            style: 'summary',
+          },
+          {
+            ul: [
+              'Total Deposits: $1000',
+              'Total Withdrawals: $500',
+              'Net Balance: $500',
+            ],
+          },
+        ],
+        styles: {
+          summary: {
+            fontSize: 14,
+            bold: true,
+            margin: [0, 10, 0, 0],
+          },
+          header: {
+            fontSize: 18,
+            bold: true,
+            margin: [0, 10, 0, 0],
+          },
+        },
+      };
 
       // Generate the PDF
       const doc = printer.createPdfKitDocument(complexDocumentDefinition);
-      // pdfDoc.pipe(fs.createWriteStream('uploads/basics.pdf'));
-      // pdfDoc.end();
 
+      // Convert stream into Buffer
       const chunks = [];
       let result: Buffer;
-
       doc.on('data', function (chunk) {
         chunks.push(chunk);
       });
