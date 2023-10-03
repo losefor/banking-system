@@ -16,6 +16,7 @@ model Bank {
   id String @id @default(uuid())
 
   name String
+  User User[]
 }
 
 enum AccountType {
@@ -32,34 +33,44 @@ model Account {
   userId String @map("user_id")
   user   User   @relation(fields: [userId], references: [id])
 
-  pemdingfromtransactions   PendingTransactoin[]   @relation("PedningFromAccount")
-  pemdingtotransactions     PendingTransactoin[]   @relation("PedningToAccount")
-  confirmedfromtransactions ConfirmedTransactoin[] @relation("ConfirmedFromAccount")
-  confirmedtotransactions   ConfirmedTransactoin[] @relation("ConfirmedToAccount")
+  pemdingFromTransactions   PendingTransaction[]   @relation("PedningFromAccount")
+  pemdingToTransactions     PendingTransaction[]   @relation("PedningToAccount")
+  confirmedFromTransactions ConfirmedTransaction[] @relation("ConfirmedFromAccount")
+  confirmedToTransactions   ConfirmedTransaction[] @relation("ConfirmedToAccount")
 }
 
-model PendingTransactoin {
+enum TransactionType {
+  WITHDRAWAL
+  DEPOSIT
+}
+
+model PendingTransaction {
   id String @id @default(uuid())
 
   amount Float
+  type   TransactionType
 
   fromAccountId String
   fromAccount   Account @relation("PedningFromAccount", fields: [fromAccountId], references: [id])
 
   toAccountId String
   toAccount   Account @relation("PedningToAccount", fields: [toAccountId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
 }
 
-model ConfirmedTransactoin {
+model ConfirmedTransaction {
   id String @id @default(uuid())
 
   amount Float
+  type   TransactionType
 
   fromAccountId String  @map("from_account_id")
   fromAccount   Account @relation("ConfirmedFromAccount", fields: [fromAccountId], references: [id])
 
-  toAccountId String  @map("to_account_id")
-  toAccount   Account @relation("ConfirmedToAccount", fields: [toAccountId], references: [id])
+  toAccountId String   @map("to_account_id")
+  toAccount   Account  @relation("ConfirmedToAccount", fields: [toAccountId], references: [id])
+  createdAt   DateTime @default(now()) @map("created_at")
 }
 
 model User {
@@ -69,11 +80,15 @@ model User {
   username String? @unique
   password String?
 
-  email   String? @unique
-  address String
+  fullName String
+  email    String? @unique
+  address  String
 
   permission   Permission @relation(fields: [permissionId], references: [id])
   permissionId String     @map("permission_id")
+
+  bank   Bank?   @relation(fields: [bankId], references: [id])
+  bankId String?
 
   // Statisticle fields
   createdAt DateTime  @default(now()) @map("created_at")
