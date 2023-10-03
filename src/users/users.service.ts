@@ -1,26 +1,55 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { String } from 'aws-sdk/clients/cloudtrail';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(private prisma: PrismaService) {}
+  async create(createUserDto: CreateUserDto) {
+    const { bankId, ...body } = createUserDto;
+
+    const permission = await this.prisma.permission.findUnique({
+      where: { uniqueName: 'USER' },
+    });
+
+    return this.prisma.user.create({
+      data: {
+        ...body,
+        bank: { connect: { id: bankId } },
+        permission: { connect: { id: permission.id } },
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    const data = await this.prisma.permission.findMany();
+    const count = await this.prisma.permission.count();
+
+    return { count, data };
   }
 
   findOne(id: number) {
     return `This action returns a #${id} user`;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(id: string, updateUserDto: UpdateUserDto) {
+    const { bankId, ...body } = updateUserDto;
+
+    return this.prisma.user.update({
+      where: { id },
+      data: {
+        ...body,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(id: string) {
+    return this.prisma.user.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

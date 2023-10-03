@@ -3,6 +3,10 @@ import { IsEmail, IsNotEmpty, IsString, IsUUID, Min } from 'class-validator';
 import { PermissionDto } from 'src/permissions/entities/permission.entity';
 
 export class UserDto implements User {
+  bankId: string;
+  fullName: string;
+  address: string;
+
   id: string;
 
   @IsNotEmpty()
