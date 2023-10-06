@@ -46,8 +46,10 @@ export class AccountsService {
     return { count, data };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} account`;
+  findOne(id: string) {
+    return this.prisma.account.findUnique({
+      where: { id },
+    });
   }
 
   update(id: string, updateAccountDto: UpdateAccountDto) {

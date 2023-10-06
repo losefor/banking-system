@@ -25,10 +25,13 @@ import { ApiPaginatedResponse } from 'src/common/decorators/api-paginated-respon
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CommonQueries } from 'src/common/dto/query-common.dto';
 import { User } from 'src/common/decorators/user.decorator';
-import { UserDto } from 'src/users/entities/user.entity';
+import { UserDto } from 'src/customers/entities/user.entity';
+import { PermissionGuard } from 'src/auth/guards/permission.guard';
+import { CheckPermissionsFor } from 'src/auth/guards/permissions.decorator';
 
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, PermissionGuard)
+@CheckPermissionsFor('Account')
 @ApiTags('Accounts')
 @Controller('accounts')
 export class AccountsController {
@@ -66,7 +69,7 @@ export class AccountsController {
   @ApiOperation({ summary: 'Get details of specific ' })
   @ApiOkResponse({ description: 'Get account', type: AccountDto })
   findOne(@Param('id') id: string) {
-    return this.accountsService.findOne(+id);
+    return this.accountsService.findOne(id);
   }
 
   @Patch(':id')
