@@ -35,6 +35,17 @@ export class TransactionsService {
       throw new BadRequestException('Transaction not found');
     }
 
+    // Update balance
+    await this.prisma.account.update({
+      where: { id: transaction.fromAccountId },
+      data: { balance: { decrement: transaction.amount } },
+    });
+
+    await this.prisma.account.update({
+      where: { id: transaction.toAccountId },
+      data: { balance: { increment: transaction.amount } },
+    });
+
     await this.prisma.confirmedTransaction.create({
       data: {
         amount: transaction.amount,
@@ -45,9 +56,18 @@ export class TransactionsService {
     });
   }
 
-  async findAll(args: Prisma.PendingTransactionFindManyArgs) {
+  async findAllPending(args: Prisma.PendingTransactionFindManyArgs) {
     const data = await this.prisma.pendingTransaction.findMany(args);
     const count = await this.prisma.pendingTransaction.count({
+      where: args.where,
+    });
+
+    return { count, data };
+  }
+
+  async findAllConfirmed(args: Prisma.ConfirmedTransactionFindManyArgs) {
+    const data = await this.prisma.confirmedTransaction.findMany(args);
+    const count = await this.prisma.confirmedTransaction.count({
       where: args.where,
     });
 

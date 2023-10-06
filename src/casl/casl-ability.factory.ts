@@ -5,7 +5,12 @@ import { UserDto } from 'src/customers/entities/user.entity';
 
 export type Action = 'manage' | 'create' | 'read' | 'update' | 'delete';
 
-export type Subjects = Prisma.ModelName | 'Customer' | 'Manager' | 'all';
+export type Subjects =
+  | Prisma.ModelName
+  | 'Transaction'
+  | 'Customer'
+  | 'Manager'
+  | 'all';
 
 export type AppAbility = PureAbility<[Action, Subjects]>;
 
