@@ -16,6 +16,9 @@ Welcome to the Nest.js Banking System project! This repository contains the sour
     - [Installation](#installation)
     - [Ensuring the security of the API](#ensuring-the-security-of-the-api)
     - [Standards and regulations](#standards-and-regulations)
+  - [Technologies](#technologies)
+    - [Node.js Advantages:](#nodejs-advantages)
+    - [PostgreSQL Advantages:](#postgresql-advantages)
 
 
 ## Features
@@ -61,3 +64,21 @@ Follow these steps to set up and run the Nest.js Banking System project on your 
 
 ### Standards and regulations 
 https://github.com/gtonic/awesome-banking-tech
+
+## Technologies 
+### Node.js Advantages:
+- Asynchronous I/O: Node.js is known for its non-blocking, event-driven architecture. This is particularly beneficial for handling a large number of concurrent requests, which is essential in a banking system where multiple users might be accessing the system simultaneously.
+Scalability:
+
+Node.js is designed to be scalable, allowing for the development of applications that can easily scale horizontally to handle increased load. This is crucial for a banking system that may experience varying levels of user activity.
+- JavaScript Everywhere: Node.js allows for the use of JavaScript on both the client and server sides. This can lead to more efficient development and better collaboration between front-end and back-end development teams.
+- Rich Ecosystem: Node.js has a rich ecosystem of packages and libraries available through npm (Node Package Manager). This can accelerate development by providing readily available modules for common functionalities.
+- Community Support: Node.js has a large and active community, which means there is a wealth of resources, tutorials, and community support available. This can be beneficial for troubleshooting and finding solutions to challenges.
+- Real-time Capabilities: Node.js is well-suited for applications that require real-time features. This can be advantageous for implementing real-time updates, notifications, and alerts in a banking system.
+### PostgreSQL Advantages:
+- ACID Compliance: PostgreSQL is known for its ACID (Atomicity, Consistency, Isolation, Durability) compliance. This ensures that transactions are reliable, consistent, and maintain data integrity, which is crucial in a banking system.
+- Extensibility: PostgreSQL supports custom functions and extensions, allowing developers to tailor the database to specific requirements. This can be useful for implementing specialized financial calculations or features.
+- Data Types and Indexing: PostgreSQL offers a wide range of data types and indexing options. This is beneficial when dealing with complex financial data and queries that require efficient indexing and searching capabilities.
+- SQL Compliance: PostgreSQL fully supports SQL standards, making it compatible with a wide range of tools and ensuring that developers can leverage their SQL expertise.
+- Open Source: Being open source, PostgreSQL is cost-effective and provides transparency in terms of source code. This can be advantageous for security audits and customization.
+- Community Support: Similar to Node.js, PostgreSQL has a strong and active community. Regular updates, security patches, and community-contributed extensions are available, ensuring the database stays current and secure.
