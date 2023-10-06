@@ -82,6 +82,14 @@ export class AccountsService {
       },
     });
 
+    const totalDeposits = transactions
+      .filter((x) => x.type === 'DEPOSIT')
+      .reduce((acc, curr) => acc + curr.amount, 0);
+
+    const totalWithdrawal = transactions
+      .filter((x) => x.type === 'WITHDRAWAL')
+      .reduce((acc, curr) => acc + curr.amount, 0);
+
     return new Promise<Buffer>((res, rej) => {
       const fonts = {
         Roboto: {
@@ -206,9 +214,9 @@ export class AccountsService {
           },
           {
             ul: [
-              'Total Deposits: $1000',
-              'Total Withdrawals: $500',
-              'Net Balance: $500',
+              `Total Deposits: ${totalDeposits}`,
+              `Total Withdrawals: ${totalWithdrawal}`,
+              `Net Balance: ${totalDeposits - totalWithdrawal}`,
             ],
           },
         ],

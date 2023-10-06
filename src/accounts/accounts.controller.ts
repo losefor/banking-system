@@ -86,9 +86,11 @@ export class AccountsController {
 
   @ApiOkResponse({
     description:
-      'This endpoint returns buffer to the client side so it will not work in swagger pleas use it in the browser',
+      'This endpoint returns buffer to the client side so it will not work in swagger pleas use it in the browser test: fa250fc3-d53b-4d57-b0bb-8225df90c5a7',
   })
-  @ApiOperation({ summary: 'Generate account statement as PDF' })
+  @ApiOperation({
+    summary: 'Generate account statement as PDF',
+  })
   @Get('generate-account-statement/:id')
   async generateAccountStatement(
     @Param('id') id: string,

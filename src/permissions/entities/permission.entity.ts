@@ -2,6 +2,8 @@ import { Permission } from '@prisma/client';
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class PermissionDto implements Permission {
+  Customer: string;
+  Manager: string;
   id: string;
   nameId: string;
 
