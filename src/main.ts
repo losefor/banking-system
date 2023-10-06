@@ -1,11 +1,10 @@
 import helmet from 'helmet';
-import * as morgan from 'morgan';
-import * as cors from 'cors';
+import morgan from 'morgan';
+import cors from 'cors';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { VersioningType } from '@nestjs/common';
-import * as basicAuth from 'express-basic-auth';
+import basicAuth from 'express-basic-auth';
 import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
@@ -14,7 +13,7 @@ async function bootstrap() {
     bufferLogs: true,
   });
 
-  // Setup pjino logger as default
+  // Setup pino logger as default
   app.useLogger(app.get(Logger));
 
   // Protect Swagger
@@ -37,11 +36,11 @@ async function bootstrap() {
   // Setup security headers
   app.use(helmet());
 
-  app.enableVersioning({
-    type: VersioningType.HEADER,
-    header: 'version',
-    defaultVersion: '1',
-  });
+  // app.enableVersioning({
+  //   type: VersioningType.HEADER,
+  //   header: 'version',
+  //   defaultVersion: '1',
+  // });
 
   if (process.env.NODE_ENV !== 'production') {
     const config = new DocumentBuilder()

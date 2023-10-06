@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import {
-  AbilityClass,
-  AbilityBuilder,
-  PureAbility,
-  Subject,
-} from '@casl/ability';
+import { AbilityClass, AbilityBuilder, PureAbility } from '@casl/ability';
 import { Prisma } from '@prisma/client';
-import { UserDto } from 'src/users/entities/user.entity';
+import { UserDto } from 'src/customers/entities/user.entity';
 
 export type Action = 'manage' | 'create' | 'read' | 'update' | 'delete';
 
-export type Subjects = Prisma.ModelName | 'all';
+export type Subjects =
+  | Prisma.ModelName
+  | 'Transaction'
+  | 'Customer'
+  | 'Manager'
+  | 'all';
 
 export type AppAbility = PureAbility<[Action, Subjects]>;
 

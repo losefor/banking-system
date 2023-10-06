@@ -3,13 +3,15 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { UploadsModule } from './uploads/uploads.module';
 import { DevtoolsModule } from '@nestjs/devtools-integration';
 import { CaslModule } from './casl/casl.module';
-import { UsersModule } from './users/users.module';
+import { UsersModule } from './customers/customers.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { LoggerModule } from 'nestjs-pino';
 import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
+import { TransactionsModule } from './transactions/transactions.module';
+import { AccountsModule } from './accounts/accounts.module';
+import { BanksModule } from './banks/banks.module';
 import * as path from 'path';
 
 @Module({
@@ -42,10 +44,12 @@ import * as path from 'path';
     AuthModule,
     PrismaModule,
     CommonModule,
-    UploadsModule,
     CaslModule,
     UsersModule,
     PermissionsModule,
+    TransactionsModule,
+    AccountsModule,
+    BanksModule,
   ],
 })
 export class AppModule {}
