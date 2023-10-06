@@ -11,7 +11,7 @@ export class UsersService {
     const { bankId, ...body } = createUserDto;
 
     const permission = await this.prisma.permission.findUnique({
-      where: { uniqueName: 'Manager' },
+      where: { uniqueName: 'MANAGER' },
     });
 
     return this.prisma.user.create({
@@ -25,7 +25,7 @@ export class UsersService {
 
   async findAll() {
     const where: Prisma.UserFindManyArgs['where'] = {
-      permission: { uniqueName: 'Managers' },
+      permission: { uniqueName: 'MANAGER' },
     };
 
     const data = await this.prisma.user.findMany({ where });
