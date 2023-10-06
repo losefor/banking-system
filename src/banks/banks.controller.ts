@@ -6,20 +6,32 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { BanksService } from './banks.service';
 import { CreateBankDto } from './dto/create-bank.dto';
 import { UpdateBankDto } from './dto/update-bank.dto';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { BankDto } from './entities/bank.entity';
 import { ApiPaginatedResponse } from 'src/common/decorators/api-paginated-response';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { PermissionGuard } from 'src/auth/guards/permission.guard';
+import { CheckPermissionsFor } from 'src/auth/guards/permissions.decorator';
 
+@ApiBearerAuth()
 @ApiTags('Banks')
 @Controller('banks')
 export class BanksController {
   constructor(private readonly banksService: BanksService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @CheckPermissionsFor('Bank')
   @ApiOperation({ summary: 'Dashboard' })
   @ApiOkResponse({ description: 'Bank created', type: BankDto })
   create(@Body() createBankDto: CreateBankDto) {
@@ -27,6 +39,8 @@ export class BanksController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @CheckPermissionsFor('Bank')
   @ApiOperation({ summary: 'Dashboard' })
   @ApiPaginatedResponse(BankDto)
   findAll() {
@@ -34,6 +48,8 @@ export class BanksController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @CheckPermissionsFor('Bank')
   @ApiOperation({ summary: 'Dashboard' })
   @ApiOkResponse({ description: 'Find one Bank', type: BankDto })
   findOne(@Param('id') id: string) {
@@ -41,6 +57,8 @@ export class BanksController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @CheckPermissionsFor('Bank')
   @ApiOperation({ summary: 'Dashboard' })
   @ApiOkResponse({ description: 'Edit bank', type: BankDto })
   update(@Param('id') id: string, @Body() updateBankDto: UpdateBankDto) {
@@ -48,6 +66,8 @@ export class BanksController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @CheckPermissionsFor('Bank')
   @ApiOperation({ summary: 'Dashboard' })
   @ApiOkResponse({ description: 'Remove created', type: BankDto })
   remove(@Param('id') id: string) {
