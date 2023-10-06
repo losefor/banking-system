@@ -22,10 +22,10 @@ export class AccountsService {
     });
   }
 
-  async findAll() {
-    const data = await this.prisma.account.findMany({});
+  async findAll(args: Prisma.AccountFindManyArgs = {}) {
+    const data = await this.prisma.account.findMany(args);
 
-    const count = await this.prisma.account.count({});
+    const count = await this.prisma.account.count({ where: args.where });
 
     return { count, data };
   }
