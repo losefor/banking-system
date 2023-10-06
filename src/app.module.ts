@@ -5,7 +5,7 @@ import { CommonModule } from './common/common.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { DevtoolsModule } from '@nestjs/devtools-integration';
 import { CaslModule } from './casl/casl.module';
-import { UsersModule } from './users/users.module';
+import { UsersModule } from './customers/customers.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { LoggerModule } from 'nestjs-pino';
 import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
