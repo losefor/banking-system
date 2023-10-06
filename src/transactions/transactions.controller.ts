@@ -36,7 +36,7 @@ export class TransactionsController {
     return this.transactionsService.create(createTransactionDto);
   }
 
-  @Get('me/pending')
+  @Get('pending')
   @UseGuards(SuperAdminOrManagerGuard)
   findAllPending() {
     return this.transactionsService.findAllPending({});
