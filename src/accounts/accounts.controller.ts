@@ -28,16 +28,17 @@ import { User } from 'src/common/decorators/user.decorator';
 import { UserDto } from 'src/customers/entities/user.entity';
 import { PermissionGuard } from 'src/auth/guards/permission.guard';
 import { CheckPermissionsFor } from 'src/auth/guards/permissions.decorator';
+import { SuperAdminOrManagerGuard } from 'src/auth/guards/superadmin-manager.guard';
 
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard, PermissionGuard)
-@CheckPermissionsFor('Account')
 @ApiTags('Accounts')
 @Controller('accounts')
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, PermissionGuard, SuperAdminOrManagerGuard)
+  @CheckPermissionsFor('Account')
   @ApiOperation({ summary: 'Dashboard: Create new account' })
   @ApiOkResponse({ description: 'Account created', type: AccountDto })
   create(@Body() createAccountDto: CreateAccountDto) {
@@ -45,6 +46,8 @@ export class AccountsController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard, PermissionGuard, SuperAdminOrManagerGuard)
+  @CheckPermissionsFor('Account')
   @ApiOperation({ summary: 'Dashboard: Get all open accounts in the bank' })
   @ApiPaginatedResponse(AccountDto)
   findAll(@Query() query: CommonQueries) {
@@ -55,6 +58,8 @@ export class AccountsController {
   }
 
   @Get('me')
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @CheckPermissionsFor('Account')
   @ApiOperation({ summary: 'Mobile: Get my accounts' })
   @ApiPaginatedResponse(AccountDto)
   findMyAccounts(@Query() query: CommonQueries, @User() user: UserDto) {
@@ -66,6 +71,8 @@ export class AccountsController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard, PermissionGuard, SuperAdminOrManagerGuard)
+  @CheckPermissionsFor('Account')
   @ApiOperation({ summary: 'Get details of specific ' })
   @ApiOkResponse({ description: 'Get account', type: AccountDto })
   findOne(@Param('id') id: string) {
@@ -73,12 +80,16 @@ export class AccountsController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, PermissionGuard, SuperAdminOrManagerGuard)
+  @CheckPermissionsFor('Account')
   @ApiOkResponse({ description: 'Update account', type: AccountDto })
   update(@Param('id') id: string, @Body() updateAccountDto: UpdateAccountDto) {
     return this.accountsService.update(id, updateAccountDto);
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, PermissionGuard, SuperAdminOrManagerGuard)
+  @CheckPermissionsFor('Account')
   @ApiOkResponse({ description: 'Remove account', type: AccountDto })
   remove(@Param('id') id: string) {
     return this.accountsService.remove(id);
@@ -92,6 +103,8 @@ export class AccountsController {
     summary: 'Generate account statement as PDF',
   })
   @Get('generate-account-statement/:id')
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @CheckPermissionsFor('Account')
   async generateAccountStatement(
     @Param('id') id: string,
     @Res() res: Response,
