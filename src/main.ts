@@ -51,7 +51,7 @@ async function bootstrap() {
       .setDescription(
         `### Docs
   
-  Here you can find all the required information to use the HodHod backend for development.
+  Here you can find all the required information for development.
   
   <details><summary>Users credentials</summary>
   <p>
