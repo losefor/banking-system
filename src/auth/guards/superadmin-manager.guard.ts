@@ -9,6 +9,8 @@ export class SuperAdminOrManagerGuard implements CanActivate {
 
     const user = req.user as UserDto;
 
+    console.log({ user });
+
     const perms = ['SUPER_ADMIN', 'MANAGER'];
 
     if (perms.includes(user.permission.uniqueName)) {

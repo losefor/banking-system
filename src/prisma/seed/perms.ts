@@ -17,6 +17,7 @@ export const seedPerms = async (prisma: PrismaClient) => {
       Bank: 'crud',
       Customer: 'crud',
       Manager: 'crud',
+      Transaction: 'crud',
     },
   });
 
@@ -36,6 +37,7 @@ export const seedPerms = async (prisma: PrismaClient) => {
       Bank: 'r',
       Customer: 'r',
       Manager: '',
+      Transaction: 'cr',
     },
   });
 
@@ -55,6 +57,7 @@ export const seedPerms = async (prisma: PrismaClient) => {
       Bank: '',
       Customer: 'crud',
       Manager: 'crud',
+      Transaction: 'crud',
     },
   });
 };

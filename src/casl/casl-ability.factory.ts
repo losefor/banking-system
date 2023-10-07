@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AbilityClass, AbilityBuilder, PureAbility } from '@casl/ability';
 import { Prisma } from '@prisma/client';
 import { UserDto } from 'src/customers/entities/user.entity';
+import _ from 'lodash';
 
 export type Action = 'manage' | 'create' | 'read' | 'update' | 'delete';
 
@@ -50,7 +51,14 @@ export class CaslAbilityFactory {
       PureAbility as AbilityClass<AppAbility>,
     );
 
-    const permissions = user.permission;
+    const permissions = _.omit(user.permission, [
+      'id',
+      'nameId',
+      'updatedAt',
+      'createdAt',
+      'warehouseId',
+      'uniqueName',
+    ]);
 
     // Default permissions to forbid all for all users
     forbid('manage', 'all');

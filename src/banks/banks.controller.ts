@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { BanksService } from './banks.service';
 import { CreateBankDto } from './dto/create-bank.dto';
@@ -22,6 +23,8 @@ import { ApiPaginatedResponse } from 'src/common/decorators/api-paginated-respon
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { PermissionGuard } from 'src/auth/guards/permission.guard';
 import { CheckPermissionsFor } from 'src/auth/guards/permissions.decorator';
+import { SuperAdminOrManagerGuard } from 'src/auth/guards/superadmin-manager.guard';
+import { CommonQueries } from 'src/common/dto/query-common.dto';
 
 @ApiBearerAuth()
 @ApiTags('Banks')
@@ -39,12 +42,15 @@ export class BanksController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @UseGuards(JwtAuthGuard, PermissionGuard, SuperAdminOrManagerGuard)
   @CheckPermissionsFor('Bank')
   @ApiOperation({ summary: 'Dashboard' })
   @ApiPaginatedResponse(BankDto)
-  findAll() {
-    return this.banksService.findAll();
+  findAll(@Query() query: CommonQueries) {
+    return this.banksService.findAll({
+      skip: query.skip,
+      take: query.take,
+    });
   }
 
   @Get(':id')

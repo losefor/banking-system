@@ -112,11 +112,12 @@ model Permission {
   updatedAt DateTime? @map("updated_at")
 
   // Models you want to control its permissions
-  Image    String @default("")
-  Account  String @default("")
-  Bank     String @default("")
-  Customer String @default("")
-  Manager  String @default("")
+  Image       String @default("")
+  Account     String @default("")
+  Bank        String @default("")
+  Customer    String @default("")
+  Manager     String @default("")
+  Transaction String @default("")
 
   users User[] @relation()
 

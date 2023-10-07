@@ -18,31 +18,34 @@ import { UserDto } from 'src/customers/entities/user.entity';
 import { SuperAdminOrManagerGuard } from 'src/auth/guards/superadmin-manager.guard';
 
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard, PermissionGuard)
-@CheckPermissionsFor('Transaction')
 @ApiTags('Transactions')
 @Controller('transactions')
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
-  @Post(':id/submit')
+  @Post('submit')
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @CheckPermissionsFor('Transaction')
   submitTransactions(@Body() createTransactionDto: CreateTransactionDto) {
     return this.transactionsService.create(createTransactionDto);
   }
 
-  @Post(':id/confirm')
-  @UseGuards(SuperAdminOrManagerGuard)
+  @Post('confirm')
+  @UseGuards(JwtAuthGuard, PermissionGuard, SuperAdminOrManagerGuard)
+  @CheckPermissionsFor('Transaction')
   confirmTransaction(@Body() createTransactionDto: CreateTransactionDto) {
     return this.transactionsService.create(createTransactionDto);
   }
 
   @Get('pending')
-  @UseGuards(SuperAdminOrManagerGuard)
+  @UseGuards(JwtAuthGuard, PermissionGuard, SuperAdminOrManagerGuard)
+  @CheckPermissionsFor('Transaction')
   findAllPending() {
     return this.transactionsService.findAllPending({});
   }
 
   @Get('me/pending')
+  @UseGuards(JwtAuthGuard)
   findAllMyPending(@User() user: UserDto) {
     return this.transactionsService.findAllPending({
       where: {
@@ -54,6 +57,7 @@ export class TransactionsController {
   }
 
   @Get('me/confirmed')
+  @UseGuards(JwtAuthGuard)
   findAllMyConfirmed(@User() user: UserDto) {
     return this.transactionsService.findAllConfirmed({
       where: {
@@ -65,7 +69,9 @@ export class TransactionsController {
   }
 
   @Delete(':id')
-  @UseGuards(SuperAdminOrManagerGuard)
+  @UseGuards(JwtAuthGuard, PermissionGuard, SuperAdminOrManagerGuard)
+  @CheckPermissionsFor('Transaction')
+  @UseGuards()
   remove(@Param('id') id: string) {
     return this.transactionsService.remove(id);
   }

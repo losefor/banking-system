@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateBankDto } from './dto/create-bank.dto';
 import { UpdateBankDto } from './dto/update-bank.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class BanksService {
@@ -11,9 +12,9 @@ export class BanksService {
     return this.prisma.bank.create({ data: createBankDto });
   }
 
-  async findAll() {
-    const data = await this.prisma.bank.findMany();
-    const count = await this.prisma.bank.count();
+  async findAll(args: Prisma.BankFindManyArgs) {
+    const data = await this.prisma.bank.findMany(args);
+    const count = await this.prisma.bank.count({ where: args.where });
 
     return { count, data };
   }
