@@ -24,14 +24,14 @@ import { UserDto } from './entities/user.entity';
 import { ApiPaginatedResponse } from 'src/common/decorators/api-paginated-response';
 
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard, PermissionGuard)
-@CheckPermissionsFor('Customer')
 @ApiTags('Customers')
 @Controller('customers')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @CheckPermissionsFor('Customer')
   @ApiOperation({ summary: 'Manager: Create new customer' })
   @ApiOkResponse({ type: UserDto })
   create(@Body() createUserDto: CreateUserDto) {
@@ -39,6 +39,8 @@ export class UsersController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @CheckPermissionsFor('Customer')
   @ApiPaginatedResponse(UserDto)
   @ApiOperation({ summary: 'Manager: Get customers' })
   findAll() {
@@ -46,6 +48,8 @@ export class UsersController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @CheckPermissionsFor('Customer')
   @ApiOkResponse({ type: UserDto })
   @ApiOperation({ summary: 'Manager: Get info of single customer' })
   findOne(@Param('id') id: string) {
@@ -53,6 +57,8 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @CheckPermissionsFor('Customer')
   @ApiOkResponse({ type: UserDto })
   @ApiOperation({ summary: 'Manager: Update customer info' })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
@@ -60,6 +66,8 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @CheckPermissionsFor('Customer')
   @ApiOkResponse({ type: UserDto })
   @ApiOperation({ summary: 'Manager: Remove customer' })
   remove(@Param('id') id: string) {

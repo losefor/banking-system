@@ -54,7 +54,7 @@ export const seedPerms = async (prisma: PrismaClient) => {
       },
       Image: 'crud',
       Account: 'crud',
-      Bank: '',
+      Bank: 'r',
       Customer: 'crud',
       Manager: 'crud',
       Transaction: 'crud',
