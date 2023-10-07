@@ -5,6 +5,9 @@ export class CreatePermissionDto extends PickType(PermissionDto, [
   'Account',
   'Bank',
   'Image',
+  'Customer',
+  'Manager',
+  'Transaction',
   'name',
   'uniqueName',
 ]) {}
