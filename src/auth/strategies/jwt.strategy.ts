@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
-
+import _ from 'lodash';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private prisma: PrismaService) {
@@ -19,6 +19,18 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       include: { permission: true },
     });
 
-    return user;
+    const reshapePerms = _.omit(user.permission, [
+      'id',
+      'nameId',
+      'updatedAt',
+      'createdAt',
+      'warehouseId',
+      'uniqueName',
+    ]);
+
+    return {
+      ...user,
+      permission: reshapePerms,
+    };
   }
 }
